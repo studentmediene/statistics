@@ -1,0 +1,112 @@
+@import url(http://fonts.googleapis.com/css?family=Raleway:400,800);
+
+body {
+    margin: 0px;
+    font-family: Raleway, Verdana, sans-serif;
+
+    display: flex;
+    min-height: 100vh;
+    flex-direction: column;
+}
+
+h1 {
+    font-weight: 400;
+    font-size: 3em;
+    margin-top: 0em;
+}
+
+h2 {
+    font-weight: 800;
+}
+
+hr {
+    margin-top: 2em;
+    margin-bottom: 2em;
+    border-style: solid;
+    border-width: 1px;
+    border-color: #fff;
+}
+
+div#content {
+    display: flex;
+    flex-direction: row;
+    flex: 1;
+}
+
+main#right {
+    padding-left: 2em;
+    padding-top: 1em;
+    flex: 1;
+}
+
+main#right h1 {
+    margin-bottom: 0em;
+}
+
+main#right h1 strong {
+    font-size: 1.5em;
+}
+
+main#right img {
+    width: 30vw;
+}
+
+div#graphs {
+    width: 65vw;
+}
+
+div#graphs p {
+    font-size: 0.8em;
+}
+
+span#graphs-left {
+    display: inline-block;
+}
+
+span#graphs-right {
+    float: right;
+}
+
+aside#left {
+    background-color: #22222a;
+    flex: 0 0 20em;
+    order: -1;
+    color: white;
+}
+
+aside#left h2 {
+    margin-left: 1em;
+    margin-right: 1em;
+}
+
+aside#left h3 {
+    margin-top: 0.25em;
+    margin-bottom: 0.25em;
+    margin-left: 0.5em;
+    font-weight: 400;
+}
+
+div.showlist-entry {
+    clear: both;
+    padding: 0px 0 0px 0;
+}
+
+div.showlist-entry .grey {
+    border-left: 5px solid #aaa;
+}
+
+div.showlist-entry .white {
+    border-left: 5px solid #eee;
+}
+
+div.showlist-entry-left {
+    display: inline-block;
+}
+
+span.showlist-entry-right {
+    float: right;
+    padding-top: 0.25em;
+    padding-bottom: 0.25em;
+    margin-right: 1em;
+    text-align: center;
+}

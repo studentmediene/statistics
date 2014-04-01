@@ -1,0 +1,61 @@
+<!doctype html>
+<html>
+    <head>
+        <title>{{ settings.BRAND_NAME }} &ndash; Statistikk</title>
+        <link rel="stylesheet" href="static/css/style.css">
+        <link href="static/css/lightbox.css" rel="stylesheet" />
+        <script src="static/js/jquery-2.1.0.min.js"></script>
+        <script src="static/js/lightbox-2.6.min.js"></script>
+    </head>
+    <body>
+    <div id="content">
+        <main id="right">
+            <!-- Current listeners, podcasts, stream-on-demand,
+            song statistics, etc. -->
+            <h1><strong id="listeners">&ndash;</strong> lyttere på streamen akkurat nå.</h1>
+            <p>Forrige rekord ble satt av <strong>{{ record.show }}</strong> med <strong>{{ record.listeners }}</strong> samtidige lyttere.
+            Dette skjedde {{ record.datetime|date:"d.m.y" }} kl. {{ record.datetime|date:"H:i" }}.</p>
+            <hr>
+            <div id="graphs">
+                <span id="graphs-left">
+                    <a href="static/img/last_day.png" data-lightbox="last_day" title="Antall lyttere det siste døgnet"><img src="static/img/last_day.png"></a>
+                    <p>Antall lyttere det siste døgnet.</p>
+                </span>
+                <span id="graphs-right">
+                    <a href="static/img/last_week.png" data-lightbox="last_week" title="Antall lyttere den siste uken"><img src="static/img/last_week.png"></a>
+                    <p>Antall lyttere den siste uken.</p>
+                </span>
+            </div>
+        </main>
+        <aside id="left">
+            <!-- Sidebar with list of the most recent
+            time slots and numbers of unique listeners
+            for each timeslot. -->
+            <h2>Siste sendinger</h2>
+            <div id="showlist">
+                {% for show in last_shows %}
+                <div class="showlist-entry">
+                    <div class="showlist-entry-left {% cycle 'grey' 'white' %}">
+                        <h3>{{ show.starttime|date:"H:i"}}&ndash;{{ show.endtime|date:"H:i"}}<br><strong>{{ show.show_in_period|truncatechars:18 }}</strong></h3>
+                    </div>
+                    <span class="showlist-entry-right">
+                        <strong>{{ show.unique_listeners}}</strong><br>unike lyttere
+                    </span>
+                </div>
+                {% endfor %}
+            </div>
+        </aside>
+    </div>
+    <script>
+        var getl = function() {
+            $.get("/api/listeners", function(data) {
+                $("#listeners").text(data);
+            });
+        };
+        getl();
+        setInterval(function() {
+            getl();
+        }, 5000);
+    </script>
+    </body>
+</html>
