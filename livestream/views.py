@@ -70,11 +70,8 @@ def load_blacklist():
 
 def get_listeners_in_interval(listeners, starttime, endtime):
     """Generates a list of unique listeners within a certain
-    time interval. To be included, a listener must:
-
-    1) Not be on the blacklist and
-    2) Listen to the stream for at least 10 seconds."""
-    blacklist = load_blacklist()
+    time interval. To be included, a listener must have
+    listened to the stream for at least 10 seconds."""
 
     listeners_in_interval = []
     unique_listeners = []
@@ -82,7 +79,7 @@ def get_listeners_in_interval(listeners, starttime, endtime):
 
     # FIXME: Mer fornuftig måte å løse dette på
     for listener in listeners:
-        if (listener["ip"] not in blacklist) and (listener["duration"] > 10):
+        if listener["duration"] > 10:
             if (starttime <= listener["datetime_start"] <= endtime) or (starttime <= listener["datetime_end"] <= endtime) or ((listener["datetime_start"] < starttime) and (listener["datetime_end"] > endtime)):
                 if listener["ip"] not in seen_ips:
                     unique_listeners.append(listener)
@@ -107,11 +104,26 @@ def load_and_merge_files(file_names):
     """Returns a list of the lines of every file specified
     by file_names."""
     if DEBUG: print "Merging " + str(len(file_names)) + " files..."
+    blacklist = load_blacklist()
     merged_lines = []
+
+    def string_contains_list(string, li):
+        """Utility function that checks whether any of the elements in li
+        are contained in string."""
+        for l in li:
+            if l in string:
+                return True
+        return False
+
     for fn in file_names:
         with open(fn) as f:
             for line in f:
-                merged_lines.append(line)
+                # Add line to merged_lines unless
+                # the line contains a blacklisted
+                # IP, and only if it contains the
+                # name of the relevant mount.
+                if (LIVESTREAM_MOUNT_NAME in line) and (not string_contains_list(line, blacklist)):
+                    merged_lines.append(line)
     if DEBUG: print str(len(merged_lines)) +  " lines in total."
     return merged_lines
 

@@ -1,7 +1,7 @@
 @import url(http://fonts.googleapis.com/css?family=Raleway:400,800);
 
 body {
-    margin: 0px;
+    margin: 50px 0 0 0;
     font-family: Raleway, Verdana, sans-serif;
 
     display: flex;
@@ -27,6 +27,37 @@ hr {
     border-color: #fff;
 }
 
+nav {
+    background-color: black;
+    width: 100%;
+    position: absolute;
+    top: 0px;
+    left: 0px;
+    padding-left: 8em;
+    color: white;
+}
+
+nav p {
+    font-weight: 800;
+    display: inline-block;
+}
+
+nav li a:link, nav li a:visited {
+    color: white;
+    text-decoration: none;
+}
+
+nav ul {
+    display: inline-block;
+}
+
+nav li {
+    display: inline;
+    list-style-type: none;
+    margin-right: 2em;
+    color: #aaa;
+}
+
 div#content {
     display: flex;
     flex-direction: row;
@@ -34,8 +65,8 @@ div#content {
 }
 
 main#right {
-    padding-left: 2em;
-    padding-top: 1em;
+    padding-left: 4em;
+    padding-top: 2em;
     flex: 1;
 }
 
@@ -74,16 +105,34 @@ aside#left {
     color: white;
 }
 
-aside#left h2 {
+aside#right {
+    background-color: #22222a;
+    flex: 0 0 20em;
+    order: 1;
+    color: white;
+}
+
+aside h2 {
     margin-left: 1em;
     margin-right: 1em;
 }
 
-aside#left h3 {
+aside h3 {
     margin-top: 0.25em;
     margin-bottom: 0.25em;
     margin-left: 0.5em;
     font-weight: 400;
+}
+
+aside p {
+    font-size: 1em;
+    font-weight: 400;
+    padding-left: 1em;
+    padding-right: 15px;
+}
+
+.showlist {
+    margin-bottom: 1em;
 }
 
 div.showlist-entry {
@@ -101,6 +150,14 @@ div.showlist-entry .white {
 
 div.showlist-entry-left {
     display: inline-block;
+}
+
+div.showlist-no-time {
+    height: 48px;
+}
+
+aside div.showlist-no-time h3 {
+    margin-top: 0.5em;
 }
 
 span.showlist-entry-right {
