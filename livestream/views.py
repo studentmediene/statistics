@@ -122,7 +122,7 @@ def load_and_merge_files(file_names):
                 # the line contains a blacklisted
                 # IP, and only if it contains the
                 # name of the relevant mount.
-                if (LIVESTREAM_MOUNT_NAME in line) and (not string_contains_list(line, blacklist)):
+                if (ICECAST2_MOUNTPOINT in line) and (not string_contains_list(line, blacklist)):
                     merged_lines.append(line)
     if DEBUG: print str(len(merged_lines)) +  " lines in total."
     return merged_lines

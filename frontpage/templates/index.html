@@ -1,83 +1,68 @@
-<!doctype html>
-<html>
-    <head>
-        <title>Radio Revolt &ndash; Statistikk</title>
-        <link rel="stylesheet" href="static/css/style.css">
-        <link href="static/css/lightbox.css" rel="stylesheet" />
-        <script src="static/js/jquery-2.1.0.min.js"></script>
-        <script src="static/js/lightbox-2.6.min.js"></script>
-    </head>
-    <body>
-    <div id="content">
-        <nav>
-            <p>Lytterstatistikk for Radio Revolt</p>
-            <ul>
-                <li><a href="/">Livestream</a></li>
-                <li>Stream-on-demand (kommer)</li>
-                <li>Podcast (kommer)</li>
-            </ul>
-        </nav>
-        <main id="right">
-            <!-- Current listeners, podcasts, stream-on-demand,
-            song statistics, etc. -->
-            <h1><strong id="listeners">&ndash;</strong> lyttere på streamen akkurat nå.</h1>
-            <p>Forrige rekord ble satt av <strong>{{ record.show }}</strong> med <strong>{{ record.listeners }}</strong> samtidige lyttere.
-            Dette skjedde {{ record.datetime|date:"d.m.y" }} kl. {{ record.datetime|date:"H:i" }}.</p>
-            <hr>
-            <div id="graphs">
-                <a href="static/img/last_day.png" data-lightbox="last_day" title="Antall lyttere det siste døgnet"><img src="static/img/last_day.png"></a>
-                <p>Antall lyttere det siste døgnet.</p><br>
-                <a href="static/img/last_week.png" data-lightbox="last_week" title="Antall lyttere den siste uken"><img src="static/img/last_week.png"></a>
-                <p>Antall lyttere den siste uken.</p>
-            </div>
-        </main>
-        <aside id="left">
-            <h2>Programstatistikk</h2>
-            <p>Lyttere på streamen de siste 3 månedene. Én person (IP) telles flere ganger om han hører på ulike sendinger, men kun én gang for hver sending. Tallene er oppgitt på formen livelyttere/repriselyttere.</p>
-            <p>Feilstavede programnavn i DigAIRange kan føre til at tallene for ett program blir spredd utover flere "programmer" i listen.</p>
-            <div class="showlist">
-                {% for show, listeners in total_show_listeners %}
-                <div class="showlist-entry">
-                    <div class="showlist-entry-left showlist-no-time {% cycle 'grey' 'white' %}">
-                        <h3><strong>{{ show|truncatechars:18 }}</strong></h3>
-                    </div>
-                    <span class="showlist-entry-right">
-                        <strong>{{ listeners.0 }}/{{ listeners.1 }}</strong><br> totale lyttere
-                    </span>
-                </div>
-                {% endfor %}
-            </div>
-        </aside>
-        <aside id="right">
-            <!-- Sidebar with list of the most recent
-            time slots and numbers of unique listeners
-            for each timeslot. -->
-            <h2>Siste sendinger</h2>
-            <p>Unike lyttere på streamen under sendingen. Dersom en person (IP) er innom streamen flere ganger under sendingen, telles han kun én gang.</p>
-            <div class="showlist">
-                {% for show in last_shows %}
-                <div class="showlist-entry">
-                    <div class="showlist-entry-left {% cycle 'grey' 'white' %}">
-                        <h3>{{ show.starttime|date:"H:i"}}&ndash;{{ show.endtime|date:"H:i"}}<br><strong>{{ show.show_in_period|truncatechars:18 }}</strong></h3>
-                    </div>
-                    <span class="showlist-entry-right">
-                        <strong>{{ show.unique_listeners}}</strong><br>unike lyttere
-                    </span>
-                </div>
-                {% endfor %}
-            </div>
-        </aside>
+{% extends "base.html" %}
+
+{% block main %}
+    <!-- Current listeners, podcasts, stream-on-demand,
+    song statistics, etc. -->
+    <h1><strong id="listeners">&ndash;</strong> lyttere på streamen akkurat nå.</h1>
+    <p>Forrige rekord ble satt av <strong>{{ record.show }}</strong> med <strong>{{ record.listeners }}</strong> samtidige lyttere.
+    Dette skjedde {{ record.datetime|date:"d.m.y" }} kl. {{ record.datetime|date:"H:i" }}.</p>
+    <hr>
+    <div id="graphs">
+        <a href="static/img/last_day.png" data-lightbox="last_day" title="Antall lyttere det siste døgnet"><img src="static/img/last_day.png"></a>
+        <p>Antall lyttere det siste døgnet.</p><br>
+        <a href="static/img/last_week.png" data-lightbox="last_week" title="Antall lyttere den siste uken"><img src="static/img/last_week.png"></a>
+        <p>Antall lyttere den siste uken.</p>
     </div>
-    <script>
-        var getl = function() {
-            $.get("/api/listeners", function(data) {
-                $("#listeners").text(data);
-            });
-        };
+{% endblock %}
+
+{% block left %}
+    <h2>Programstatistikk</h2>
+    <p>Lyttere på streamen de siste 3 månedene. Én person (IP) telles flere ganger om han hører på ulike sendinger, men kun én gang for hver sending. Tallene er oppgitt på formen livelyttere/repriselyttere.</p>
+    <p>Feilstavede programnavn i DigAIRange kan føre til at tallene for ett program blir spredd utover flere "programmer" i listen.</p>
+    <div class="showlist">
+        {% for show, listeners in total_show_listeners %}
+        <div class="showlist-entry">
+            <div class="showlist-entry-left showlist-no-time {% cycle 'grey' 'white' %}">
+                <h3><strong>{{ show|truncatechars:18 }}</strong></h3>
+            </div>
+            <span class="showlist-entry-right">
+                <strong>{{ listeners.0 }}/{{ listeners.1 }}</strong><br> totale lyttere
+            </span>
+        </div>
+        {% endfor %}
+    </div>
+{% endblock %}
+
+{% block right %}
+    <!-- Sidebar with list of the most recent
+    time slots and numbers of unique listeners
+    for each timeslot. -->
+    <h2>Siste sendinger</h2>
+    <p>Unike lyttere på streamen under sendingen. Dersom en person (IP) er innom streamen flere ganger under sendingen, telles han kun én gang.</p>
+    <div class="showlist">
+        {% for show in last_shows %}
+        <div class="showlist-entry">
+            <div class="showlist-entry-left {% cycle 'grey' 'white' %}">
+                <h3>{{ show.starttime|date:"H:i"}}&ndash;{{ show.endtime|date:"H:i"}}<br><strong>{{ show.show_in_period|truncatechars:18 }}</strong></h3>
+            </div>
+            <span class="showlist-entry-right">
+                <strong>{{ show.unique_listeners}}</strong><br>unike lyttere
+            </span>
+        </div>
+        {% endfor %}
+    </div>
+{% endblock %}
+
+{% block bottom_scripts %}
+<script>
+    var getl = function() {
+        $.get("/api/listeners", function(data) {
+            $("#listeners").text(data);
+        });
+    };
+    getl();
+    setInterval(function() {
         getl();
-        setInterval(function() {
-            getl();
-        }, 5000);
-    </script>
-    </body>
-</html>
+    }, 5000);
+</script>
+{% endblock %}

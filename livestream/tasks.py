@@ -13,7 +13,7 @@ from livestream.parse import parse_access_log
 from livestream.models import PeriodSummary, StreamListeners
 
 from statistics.celery import app
-from statistics.settings import SHOW_NAME_API, BASE_DIR
+from statistics.settings import SHOW_NAME_API, BASE_DIR, ICECAST2_MOUNTPOINT
 
 def prepare_listener_info(info_):
     """Prepares listener_info for JSON
