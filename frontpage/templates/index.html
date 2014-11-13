@@ -1,8 +1,6 @@
 {% extends "base.html" %}
 
 {% block main %}
-    <!-- Current listeners, podcasts, stream-on-demand,
-    song statistics, etc. -->
     <h1><strong id="listeners">&ndash;</strong> lyttere på streamen akkurat nå.</h1>
     <p>Forrige rekord ble satt av <strong>{{ record.show }}</strong> med <strong>{{ record.listeners }}</strong> samtidige lyttere.
     Dette skjedde {{ record.datetime|date:"d.m.y" }} kl. {{ record.datetime|date:"H:i" }}.</p>

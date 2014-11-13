@@ -2,10 +2,14 @@
 <html>
     <head>
         <title>Radio Revolt &ndash; Statistikk</title>
-        <link rel="stylesheet" href="static/css/style.css">
-        <link href="static/css/lightbox.css" rel="stylesheet" />
-        <script src="static/js/jquery-2.1.0.min.js"></script>
-        <script src="static/js/lightbox-2.6.min.js"></script>
+        {% block head_before %}
+        {% endblock %}
+        <link rel="stylesheet" href="/static/css/style.css">
+        <link href="/static/css/lightbox.css" rel="stylesheet" />
+        <script src="/static/js/jquery-2.1.0.min.js"></script>
+        <script src="/static/js/lightbox-2.6.min.js"></script>
+        {% block head_after %}
+        {% endblock %}
     </head>
     <body>
     <div id="content">
@@ -13,8 +17,8 @@
             <p>Lytterstatistikk for Radio Revolt</p>
             <ul>
                 <li><a href="/">Livestream</a></li>
+                <li><a href="/podcast">Podcast</a></li>
                 <li>Stream-on-demand (kommer)</li>
-                <li>Podcast (kommer)</li>
             </ul>
         </nav>
         <main id="right">

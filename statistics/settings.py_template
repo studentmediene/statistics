@@ -90,6 +90,10 @@ ICECAST2_MOUNTPOINT = "" # Which IceCast2 mountpoint to generate statistics for
 ICECAST2_USER = ""
 ICECAST2_PASS = ""
 
+# Google Feedburner login info
+FEEDBURNER_EMAIL = ''
+FEEDBURNER_PASSWORD = ''
+
 ##### APP SETTINGS END
 ########## END ##################
 
@@ -117,3 +121,4 @@ STATIC_URL = '/static/'
 STATICFILES_DIRS = (
         os.path.join(BASE_DIR, "static"),
         )
+

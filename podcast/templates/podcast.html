@@ -1,0 +1,68 @@
+{% extends "base.html" %}
+
+{% block head_before %}
+<!-- for http://purecss.io/tables/ -->
+<link rel="stylesheet" href="http://yui.yahooapis.com/pure/0.5.0/pure-min.css">
+{% endblock %}
+
+{% block main %}
+    <h1>Podcaststatistikk</h1>
+    <table class="pure-table pure-table-striped">
+        <thead>
+            <tr>
+                <th>Program</th>
+                <th>Nedlastinger den siste uken</th>
+                <th>Nedlastinger siste 30 dager</th>
+                <th>Nedlastinger dette semesteret</th>
+                <th>Nedlastinger gjennom all tid</th>
+                <th>Lagt ut</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for show in shows %}
+            <tr>
+                <td>{{ show.name }}</td>
+                <td>{{ show.last_week }}</td>
+                <td>{{ show.last_30_days }}</td>
+                <td>{{ show.this_semester }}</td>
+                <td>{{ show.all_time }}</td>
+                <td>{{ show.first_added }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+{% endblock %}
+
+{% block left %}
+    <h2>Månedstoppen</h2>
+    <p>Programmene rangert etter antall podcastnedlastinger de siste 30 dagene.</p>
+    <div class="showlist">
+        {% for show, listeners in 30_days_top %}
+        <div class="showlist-entry">
+            <div class="showlist-entry-left showlist-no-time {% cycle 'grey' 'white' %}">
+                <h3><strong>{{ show|truncatechars:18 }}</strong></h3>
+            </div>
+            <span class="showlist-entry-right">
+                <strong>{{ listeners }}</strong><br> total nedl.
+            </span>
+        </div>
+        {% endfor %}
+    </div>
+{% endblock %}
+
+{% block right %}
+    <h2>Gjennom tidene</h2>
+    <p>Programmene rangert etter antall podcastnedlastinger gjennom alle tider.</p>
+    <div class="showlist">
+        {% for show, listeners in all_time_top %}
+        <div class="showlist-entry">
+            <div class="showlist-entry-left showlist-no-time {% cycle 'grey' 'white' %}">
+                <h3><strong>{{ show|truncatechars:18 }}</strong></h3>
+            </div>
+            <span class="showlist-entry-right">
+                <strong>{{ listeners }}</strong><br> total nedl.
+            </span>
+        </div>
+        {% endfor %}
+    </div>
+{% endblock %}

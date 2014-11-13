@@ -5,6 +5,7 @@ admin.autodiscover()
 
 urlpatterns = patterns('',
     url(r'^$', 'frontpage.views.frontpage', name='frontpage'),
+    url(r'^podcast/', 'podcast.views.podcast', name='podcast'),
     url(r'^api/listeners', 'livestream.views.stream_listeners', name='stream_listeners'),
     url(r'^admin/', include(admin.site.urls)),
 )
