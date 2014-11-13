@@ -102,7 +102,7 @@ def create_plots():
     import numpy as np
     from shutil import copyfile
 
-    smoothing = 0.2
+    smoothing = 0.05
 
     period_summaries = PeriodSummary.objects.order_by('-endtime')
     last_day = map(lambda s: (s.unique_listeners, s.starttime), period_summaries[0:23])

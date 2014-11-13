@@ -172,3 +172,7 @@ span.showlist-entry-right {
     margin-right: 1em;
     text-align: center;
 }
+
+th.narrow {
+    width: 4em;
+}
