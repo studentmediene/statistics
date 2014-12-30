@@ -140,6 +140,10 @@ aside p {
     margin-bottom: 1em;
 }
 
+.showlist a:link, .showlist a:visited, .showlist a:hover, .showlist a:active {
+    color: inherit;
+}
+
 div.showlist-entry {
     clear: both;
     padding: 0px 0 0px 0;

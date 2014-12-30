@@ -1,6 +1,5 @@
 from __future__ import absolute_import
 import json
-import urllib2
 from datetime import datetime, timedelta
 from copy import deepcopy
 
@@ -8,36 +7,12 @@ from celery import shared_task
 from celery.task import periodic_task
 from celery.schedules import crontab
 
-from livestream.views import load_correct_access_log_files, get_listeners_in_interval, get_stream_listeners_from_api, load_and_merge_files
+from livestream.util import *
 from livestream.parse import parse_access_log
 from livestream.models import PeriodSummary, StreamListeners
 
 from statistics.celery import app
-from statistics.settings import SHOW_NAME_API, BASE_DIR, ICECAST2_MOUNTPOINT
-
-def prepare_listener_info(info_):
-    """Prepares listener_info for JSON
-    serialization by converting the
-    datetimes to strings."""
-    info = deepcopy(info_)
-    for i, listener in enumerate(info):
-        info[i]["datetime_end"] = info[i]["datetime_end"].isoformat()
-        info[i]["datetime_start"] = info[i]["datetime_start"].isoformat()
-    return info
-
-def get_show_in_period(starttime, endtime=None):
-    """Retrieves the show in the given period
-    from the radio API."""
-    url = SHOW_NAME_API % (starttime.year, starttime.month, starttime.day,)
-
-    a = urllib2.urlopen(url)
-    show_json = json.load(a)
-    for show in show_json:
-        if datetime.strptime(show["starttime"], "%Y-%m-%d %H:%M:%S").hour == starttime.hour:
-            return show["title"]
-        elif datetime.strptime(show["starttime"], "%Y-%m-%d %H:%M:%S") <= starttime < datetime.strptime(show["endtime"], "%Y-%m-%d %H:%M:%S"):
-            return show["title"]
-    return "Ukjent"
+from statistics.settings import BASE_DIR, ICECAST2_MOUNTPOINT
 
 @periodic_task(run_every=crontab(minute='*/1'))
 def insert_current_listeners():

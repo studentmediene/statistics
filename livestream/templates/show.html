@@ -1,0 +1,29 @@
+{% extends "stream_base.html" %}
+
+{% block head_before %}
+<!-- for http://purecss.io/tables/ -->
+<link rel="stylesheet" href="http://yui.yahooapis.com/pure/0.5.0/pure-min.css">
+{% endblock %}
+
+{% block main %}
+    <h1>{{ show }}</h1>
+    <p>Dette er en oversikt over unike lyttere i løpet av sendingene til {{ show }} de siste 5 månedene, repriser inkludert.</p>
+    <table class="pure-table pure-table-striped">
+        <thead>
+            <tr>
+                <th>Dato og tidspunkt</th>
+                <th>Sendt som</th>
+                <th>Unike lyttere</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for broadcast in broadcasts %}
+            <tr>
+                <td>{{ broadcast.starttime|date:"Y-m-d, H:i" }}</td>
+                <td>{{ broadcast.show_in_period }}</td>
+                <td>{{ broadcast.unique_listeners }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+{% endblock %}

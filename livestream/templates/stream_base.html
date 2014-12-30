@@ -1,27 +1,15 @@
 {% extends "base.html" %}
 
-{% block main %}
-    <h1><strong id="listeners">&ndash;</strong> lyttere på streamen akkurat nå.</h1>
-    <p>Forrige rekord ble satt av <strong>{{ record.show }}</strong> med <strong>{{ record.listeners }}</strong> samtidige lyttere.
-    Dette skjedde {{ record.datetime|date:"d.m.y" }} kl. {{ record.datetime|date:"H:i" }}.</p>
-    <hr>
-    <div id="graphs">
-        <a href="static/img/last_day.png" data-lightbox="last_day" title="Antall lyttere det siste døgnet"><img src="static/img/last_day.png"></a>
-        <p>Antall lyttere det siste døgnet.</p><br>
-        <a href="static/img/last_week.png" data-lightbox="last_week" title="Antall lyttere den siste uken"><img src="static/img/last_week.png"></a>
-        <p>Antall lyttere den siste uken.</p>
-    </div>
-{% endblock %}
-
 {% block left %}
     <h2>Programstatistikk</h2>
     <p>Lyttere på streamen de siste 3 månedene. Én person (IP) telles flere ganger om han hører på ulike sendinger, men kun én gang for hver sending. Tallene er oppgitt på formen livelyttere/repriselyttere.</p>
     <p>Feilstavede programnavn i DigAIRange kan føre til at tallene for ett program blir spredd utover flere "programmer" i listen.</p>
+    <p>Klikk på programnavnene for å få tall for hver sending.</p>
     <div class="showlist">
         {% for show, listeners in total_show_listeners %}
         <div class="showlist-entry">
             <div class="showlist-entry-left showlist-no-time {% cycle 'grey' 'white' %}">
-                <h3><strong>{{ show|truncatechars:18 }}</strong></h3>
+                <h3><strong><a href="/stream/{{ show }}">{{ show|truncatechars:18 }}</a></strong></h3>
             </div>
             <span class="showlist-entry-right">
                 <strong>{{ listeners.0 }}/{{ listeners.1 }}</strong><br> totale lyttere
@@ -38,13 +26,13 @@
     <h2>Siste sendinger</h2>
     <p>Unike lyttere på streamen under sendingen. Dersom en person (IP) er innom streamen flere ganger under sendingen, telles han kun én gang.</p>
     <div class="showlist">
-        {% for show in last_shows %}
+        {% for broadcast in last_broadcasts %}
         <div class="showlist-entry">
             <div class="showlist-entry-left {% cycle 'grey' 'white' %}">
-                <h3>{{ show.starttime|date:"H:i"}}&ndash;{{ show.endtime|date:"H:i"}}<br><strong>{{ show.show_in_period|truncatechars:18 }}</strong></h3>
+                <h3>{{ broadcast.starttime|date:"H:i"}}&ndash;{{ broadcast.endtime|date:"H:i"}}<br><strong>{{ broadcast.show_in_period|truncatechars:18 }}</strong></h3>
             </div>
             <span class="showlist-entry-right">
-                <strong>{{ show.unique_listeners}}</strong><br>unike lyttere
+                <strong>{{ broadcast.unique_listeners}}</strong><br>unike lyttere
             </span>
         </div>
         {% endfor %}
