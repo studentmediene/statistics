@@ -5,7 +5,7 @@ from django.shortcuts import render
 from django.http import HttpResponse
 
 from livestream.models import PeriodSummary, StreamListeners
-from livestream.util import get_last_broadcasts, get_total_listeners_per_show, get_show_in_period, get_stream_listeners_from_api
+from livestream.util import get_last_broadcasts, get_total_listeners_per_show, get_show_in_period, get_stream_listeners_from_api, is_rebroadcast
 
 ##### HTML views
 
@@ -18,7 +18,10 @@ def show(request, show):
                 show_in_period__icontains=show
             ).order_by('-endtime')
 
-    return render(request, 'show.html', { "show": show, "broadcasts": all_recent_broadcasts, "last_broadcasts": last_broadcasts, "total_show_listeners": total_show_listeners })
+    rebroadcasts = [b for b in all_recent_broadcasts if is_rebroadcast(b.show_in_period)]
+    live_broadcasts = [b for b in all_recent_broadcasts if not is_rebroadcast(b.show_in_period)]
+
+    return render(request, 'show.html', { "show": show, "live_broadcasts": live_broadcasts, "rebroadcasts": rebroadcasts, "last_broadcasts": last_broadcasts, "total_show_listeners": total_show_listeners })
 
 def overview(request):
     last_broadcasts = get_last_broadcasts()

@@ -2,6 +2,8 @@
 import urllib2
 import os
 import json
+import re
+
 from copy import deepcopy
 from sys import argv
 from bs4 import BeautifulSoup
@@ -11,6 +13,14 @@ from datetime import date, datetime, timedelta
 from glob import glob
 
 from livestream.models import PeriodSummary, StreamListeners
+
+def is_rebroadcast(broadcast_title):
+    # Matches (R), (R2), (R3), etc.
+    rexp = re.compile(r'\(R((\d)+)?\)')
+    if re.search(rexp, broadcast_title):
+        return True
+    else:
+        return False
 
 def get_last_broadcasts():
     try:
@@ -24,15 +34,14 @@ def get_total_listeners_per_show(months):
 
         show_listeners_dict = {}
         for broadcast in all_recent_broadcasts:
-            show_name = broadcast.show_in_period
-            canonical_name = show_name.rsplit("(")[0].rstrip().title()
-            is_rebroadcast = True if "(R)" in show_name or "(R2)" in show_name or "(R3)" in show_name else False
+            broadcast_title = broadcast.show_in_period
+            canonical_name = broadcast_title.rsplit("(")[0].rstrip().title()
 
             if canonical_name not in show_listeners_dict:
                 show_listeners_dict[canonical_name] = [0, 0]
 
             # { showname: [ordinary_listeners, rebroadcast_listeners] }
-            if is_rebroadcast:
+            if is_rebroadcast(broadcast_title):
                 show_listeners_dict[canonical_name][1] += broadcast.unique_listeners
             else:
                 show_listeners_dict[canonical_name][0] += broadcast.unique_listeners

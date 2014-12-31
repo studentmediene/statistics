@@ -7,7 +7,9 @@
 
 {% block main %}
     <h1>{{ show }}</h1>
-    <p>Dette er en oversikt over unike lyttere i løpet av sendingene til {{ show }} de siste 5 månedene, repriser inkludert.</p>
+    <p>Dette er en oversikt over unike lyttere i løpet av sendingene til {{ show }} de siste 5 månedene, delt opp i direktesendinger og repriser.</p>
+    <h2>Direktesendinger</h2>
+    <p>Merk at alle sendinger i liveslotten til programmet er tatt med her, uavhengig av om det faktisk var en direktesending eller om det var lagt opp reprise.
     <table class="pure-table pure-table-striped">
         <thead>
             <tr>
@@ -17,7 +19,26 @@
             </tr>
         </thead>
         <tbody>
-            {% for broadcast in broadcasts %}
+            {% for broadcast in live_broadcasts %}
+            <tr>
+                <td>{{ broadcast.starttime|date:"Y-m-d, H:i" }}</td>
+                <td>{{ broadcast.show_in_period }}</td>
+                <td>{{ broadcast.unique_listeners }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    <h2>Repriser</h2>
+    <table class="pure-table pure-table-striped">
+        <thead>
+            <tr>
+                <th>Dato og tidspunkt</th>
+                <th>Sendt som</th>
+                <th>Unike lyttere</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for broadcast in rebroadcasts %}
             <tr>
                 <td>{{ broadcast.starttime|date:"Y-m-d, H:i" }}</td>
                 <td>{{ broadcast.show_in_period }}</td>
