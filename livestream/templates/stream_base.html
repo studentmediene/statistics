@@ -42,7 +42,7 @@
 {% block bottom_scripts %}
 <script>
     var getl = function() {
-        $.get("/api/listeners", function(data) {
+        $.get("{% url "stream_listeners" %}", function(data) {
             $("#listeners").text(data);
         });
     };
