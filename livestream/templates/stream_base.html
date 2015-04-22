@@ -9,7 +9,7 @@
         {% for show, listeners in total_show_listeners %}
         <div class="showlist-entry">
             <div class="showlist-entry-left showlist-no-time {% cycle 'grey' 'white' %}">
-                <h3><strong><a href="/stream/{{ show }}">{{ show|truncatechars:18 }}</a></strong></h3>
+                <h3><strong><a href="{{ show }}">{{ show|truncatechars:18 }}</a></strong></h3>
             </div>
             <span class="showlist-entry-right">
                 <strong>{{ listeners.0 }}/{{ listeners.1 }}</strong><br> totale lyttere
