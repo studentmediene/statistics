@@ -33,11 +33,11 @@ nav {
     position: absolute;
     top: 0px;
     left: 0px;
-    padding-left: 8em;
     color: white;
 }
 
 nav p {
+    margin-left: 8em;
     font-weight: 800;
     display: inline-block;
 }

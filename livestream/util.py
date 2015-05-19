@@ -88,7 +88,7 @@ def get_stream_listeners_from_api():
     blacklist = load_blacklist()
 
     s = BeautifulSoup(a)
-    parent = s.find("table", {"id": "listenertable"})
+    parent = s.find("tbody")
 
     total_listeners = 0
     IPs = []
@@ -96,12 +96,11 @@ def get_stream_listeners_from_api():
     user_agents = []
 
     for i, child in enumerate(parent.children):
-        if i == 0:
-            # Title row
+        if child == u'\n':
             continue
-        ip = child.contents[0].contents[0]
-        _seconds_connected = child.contents[1].contents[0]
-        full_agent = child.contents[3].contents[0]
+        ip = child.contents[1].contents[0]
+        _seconds_connected = child.contents[3].contents[0]
+        full_agent = child.contents[5].contents[0]
         short_agent = full_agent.split("/")[0] # We don't care about version numbers and OS
         if (ip not in blacklist) and (short_agent not in blacklist):
             total_listeners += 1
