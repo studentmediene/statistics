@@ -14,8 +14,8 @@ class Command(BaseCommand):
     help = "Update recent shows and create plots."
 
     def handle(self, *args, **kwargs):
-        print "Updating shows..."
+        print("Updating shows...")
         update_recent_shows.delay()
-        print "Creating plots..."
+        print("Creating plots...")
         create_plots.delay()
-        print "Done!"
+        print("Done!")

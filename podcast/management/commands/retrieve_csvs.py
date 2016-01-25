@@ -77,4 +77,4 @@ class Command(BaseCommand):
             # Finally, we create all the objects. Far faster than creating one at a time.
             PodcastStatistics.objects.bulk_create(rows_to_insert)
 
-        print "Done."
+        print("Done.")

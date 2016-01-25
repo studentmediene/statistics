@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-import urllib2
+import urllib.request, urllib.error, urllib.parse
 import os
 import json
 import re
@@ -46,7 +46,7 @@ def get_total_listeners_per_show(months):
             else:
                 show_listeners_dict[canonical_name][0] += broadcast.unique_listeners
 
-        return sorted(show_listeners_dict.items(), key=lambda x: -x[1][0])
+        return sorted(list(show_listeners_dict.items()), key=lambda x: -x[1][0])
     except IndexError:
         return {}
 
@@ -65,7 +65,7 @@ def get_show_in_period(starttime, endtime=None):
     from the radio API."""
     url = SHOW_NAME_API % (starttime.year, starttime.month, starttime.day,)
 
-    a = urllib2.urlopen(url)
+    a = urllib.request.urlopen(url)
     show_json = json.load(a)
     for show in show_json:
         if datetime.strptime(show["starttime"], "%Y-%m-%d %H:%M:%S").hour == starttime.hour:
@@ -78,12 +78,12 @@ def get_stream_listeners_from_api():
     """Retrieves the numbers of stream listeners at the
     current instant from the API, and removes blacklisted
     IPs."""
-    p = urllib2.HTTPPasswordMgrWithDefaultRealm()
+    p = urllib.request.HTTPPasswordMgrWithDefaultRealm()
     p.add_password(None, ICECAST2_ROOT + '/admin/', ICECAST2_USER, ICECAST2_PASS)
-    auth_handler = urllib2.HTTPBasicAuthHandler(p)
-    opener = urllib2.build_opener(auth_handler)
-    urllib2.install_opener(opener)
-    a = urllib2.urlopen(ICECAST2_ROOT + '/admin/listclients.xsl?mount=/' + ICECAST2_MOUNTPOINT).read()
+    auth_handler = urllib.request.HTTPBasicAuthHandler(p)
+    opener = urllib.request.build_opener(auth_handler)
+    urllib.request.install_opener(opener)
+    a = urllib.request.urlopen(ICECAST2_ROOT + '/admin/listclients.xsl?mount=/' + ICECAST2_MOUNTPOINT).read()
 
     blacklist = load_blacklist()
 
@@ -96,7 +96,7 @@ def get_stream_listeners_from_api():
     user_agents = []
 
     for i, child in enumerate(parent.children):
-        if child == u'\n':
+        if child == '\n':
             continue
         ip = child.contents[1].contents[0]
         _seconds_connected = child.contents[3].contents[0]
@@ -155,7 +155,7 @@ def get_average_listening_time(listeners_in_interval):
 def load_and_merge_files(file_names):
     """Returns a list of the lines of every file specified
     by file_names."""
-    if DEBUG: print "Merging " + str(len(file_names)) + " files..."
+    if DEBUG: print("Merging " + str(len(file_names)) + " files...")
     blacklist = load_blacklist()
     merged_lines = []
 
@@ -176,7 +176,7 @@ def load_and_merge_files(file_names):
                 # name of the relevant mount.
                 if (ICECAST2_MOUNTPOINT in line) and (not string_contains_list(line, blacklist)):
                     merged_lines.append(line)
-    if DEBUG: print str(len(merged_lines)) +  " lines in total."
+    if DEBUG: print(str(len(merged_lines)) +  " lines in total.")
     return merged_lines
 
 def load_correct_access_log_files(starttime, endtime):

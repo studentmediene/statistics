@@ -1,4 +1,4 @@
-from __future__ import absolute_import
+
 import json
 from datetime import datetime, timedelta
 from copy import deepcopy
@@ -80,17 +80,17 @@ def create_plots():
     smoothing = 0.05
 
     period_summaries = PeriodSummary.objects.order_by('-endtime')
-    last_day = map(lambda s: (s.unique_listeners, s.starttime), period_summaries[0:23])
+    last_day = [(s.unique_listeners, s.starttime) for s in period_summaries[0:23]]
 
     if len(period_summaries) > 168:
         last_week = period_summaries[0:167]
     else:
         last_week = period_summaries[0:]
-    last_week = map(lambda s: (s.unique_listeners, s.starttime + timedelta(minutes=30)), last_week)
+    last_week = [(s.unique_listeners, s.starttime + timedelta(minutes=30)) for s in last_week]
 
     ############
     ### Last day
-    ld_zipped = zip(*last_day)
+    ld_zipped = list(zip(*last_day))
     ld_listeners = ld_zipped[0]
     ld_times = matplotlib.dates.date2num(ld_zipped[1])
 
@@ -100,7 +100,7 @@ def create_plots():
     fig = pl.figure(figsize=(20,4))
     ax = pl.subplot(111)
     ax.tick_params(labelsize=10, color=(0.45, 0.45, 0.45), labelcolor=(0.45, 0.45, 0.45))
-    for spine in ax.spines.values():
+    for spine in list(ax.spines.values()):
         spine.set_edgecolor((0.45, 0.45, 0.45))
     ax.spines['right'].set_color('none')
     ax.spines['top'].set_color('none')
@@ -119,7 +119,7 @@ def create_plots():
 
     #############
     ### Last week
-    lw_zipped = zip(*last_week)
+    lw_zipped = list(zip(*last_week))
     lw_listeners = lw_zipped[0]
     lw_times = matplotlib.dates.date2num(lw_zipped[1])
 
@@ -132,7 +132,7 @@ def create_plots():
     fig = pl.figure(figsize=(20,4))
     ax = pl.subplot(111)
     ax.tick_params(labelsize=10, color=(0.45, 0.45, 0.45), labelcolor=(0.45, 0.45, 0.45))
-    for spine in ax.spines.values():
+    for spine in list(ax.spines.values()):
         spine.set_edgecolor((0.45, 0.45, 0.45))
     ax.spines['right'].set_color('none')
     ax.spines['top'].set_color('none')

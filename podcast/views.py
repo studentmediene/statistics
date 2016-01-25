@@ -5,6 +5,7 @@ from django.views.decorators.cache import cache_page
 from django.core.cache import cache
 
 from podcast.models import PodcastStatistics, Show
+from functools import reduce
 
 SPRING_SEMESTER_MONTH_START = 1
 SPRING_SEMESTER_DAY_START = 1
