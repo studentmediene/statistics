@@ -6,3 +6,4 @@ listeners_log.txt
 celerybeat-schedule
 podcast/csv/*.csv
 static/img/last*.png
+venv
