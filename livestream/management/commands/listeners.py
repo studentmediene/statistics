@@ -8,7 +8,7 @@ from glob import glob
 from django.core.management.base import BaseCommand, CommandError
 
 from livestream.parse import parse_access_log
-from livestream.views import load_correct_access_log_files, load_and_merge_files, get_listeners_in_interval
+from livestream.util import load_correct_access_log_files, load_and_merge_files, get_listeners_in_interval
 
 class Command(BaseCommand):
     format = "Format: python manage.py listeners 2014-01-01T00:00:00 2014-01-01T01:00:01"
