@@ -86,7 +86,8 @@ BRAND_NAME = "" # Example: "Radio Revolt"
 #USE_X_FORWARDED_HOST = True ### Uncomment if running django behind a proxy
 
 LIVESTREAM_LOG_PATH = "" # Example: "/srv/logs"
-SHOW_NAME_API = "" # Path to radio-rest-api source for show names. Example: http://server.com/v1/sendinger/dato/%d/%d/%d/autoavvikler
+SHOW_NAME_API = "" # Path to radio-rest-api source for show names on a particular day. Example: http://server.com/v1/sendinger/dato/%d/%d/%d/autoavvikler
+SHOW_LIST_API = "" # Path to radio-rest-api source for list of shows. Example: http://server.com/v1/programmer/list
 
 ICECAST2_ROOT = "" # Example: http://server.com:8000
 ICECAST2_MOUNTPOINT = "" # Which IceCast2 mountpoint to generate statistics for
