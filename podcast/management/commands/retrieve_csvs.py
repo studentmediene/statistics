@@ -7,9 +7,9 @@ from glob import glob
 
 from django.core.management.base import BaseCommand, CommandError
 from podcast.models import Show, PodcastStatistics
-from statistics.settings import FEEDBURNER_EMAIL, FEEDBURNER_PASSWORD
+from statistics.settings import FEEDBURNER_EMAIL, FEEDBURNER_PASSWORD, DEBUG
 
-import spynner, requests, os, sys, io, csv
+import spynner, os, sys, io, csv
 from PyQt4.QtCore import Qt
 from bs4 import BeautifulSoup
 
@@ -21,13 +21,16 @@ class Command(BaseCommand):
 
     def handle(self, *args, **kwargs):
         b = spynner.Browser()
-        b.show()
+        if DEBUG:
+            b.show()
         print("Started...")
 
         b.load("http://feedburner.google.com")
         print("Loaded Feedburner...")
 
         b.wk_fill('input[name=Email]', FEEDBURNER_EMAIL)
+        b.wk_click('#next')
+        b.wait_load()
         b.wk_fill('input[name=Passwd]', FEEDBURNER_PASSWORD)
 
         b.wk_click('#signIn')
@@ -49,8 +52,35 @@ class Command(BaseCommand):
             CSV_url = sh.select('div#servicesList > p > a')[1]['href']
 
             fi = b.download(BASE_URL + CSV_url)
-            csv_fi = csv.reader(fi.splitlines(False)[1:], delimiter=",")
+            lines = fi.splitlines(False)
 
+            # Is there enough data?
+            title_row = lines[0]
+            if "Item Views" not in title_row or \
+                            "Item Clickthroughs" not in title_row or \
+                            "Enclosure Downloads" not in title_row:
+                # Activate additional statistics for this podcast
+                # Using sys.stdout.write to avoid trailing newline (so that "Done!" is on the same line)
+                sys.stdout.write("  Telling feedburner to track item views, clickthroughs and downloads... ")
+                # Construct URL for settings page
+                settings_url = url.replace("dashboard", "analyze/totalstats")
+                # Load that page
+                b.load(settings_url)
+                # Check boxes for collecting item views and click throughs and downloads
+                b.wk_check("#itemViews")
+                b.wk_check("#clickThroughs")
+                b.wk_check("#downloads")
+                # Hit the save button
+                b.wk_click("div.customizerFooter > p > input", wait_load=True)
+                # Redownload CSV (this time with enough columns)
+                fi = b.download(BASE_URL + CSV_url)
+                lines = fi.splitlines(False)
+
+                print("Done!")
+
+            csv_fi = csv.reader(lines[1:], delimiter=",")
+
+            # Add this show if it's not in the database
             shows = Show.objects.filter(name = title)
             if len(shows) == 0:
                 s = Show(name = title, digas_id = "")
