@@ -3,3 +3,4 @@ south
 celery
 gunicorn
 BeautifulSoup4
+spynner
