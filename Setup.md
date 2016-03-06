@@ -41,6 +41,10 @@ Make sure you've activated the virtual environment, then run
 pip install -r requirements.txt
 ```
 
+## Set up settings
+Make a copy of `settings.py_template` called `settings.py`, then fill in the missing settings.
+
 ## Initialize Django-installation
 
-Google "how to set up django project in production"
+Google "how to set up django project in production". You need to run `python manage.py migrate`,
+and ensure `start_celery.sh` runs on startup.
